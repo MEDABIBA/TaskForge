@@ -1,0 +1,5 @@
+-- Схему базы данных тебе тоже нужно спроектировать самому.
+-- Подсказка: тебе нужны минимум 3 таблицы.
+-- Этот файл можно подключить в docker-compose как volume:
+--   volumes:
+--     - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql

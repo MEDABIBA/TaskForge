@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String
+  password     String
+  createdAt    DateTime @default(now())
+  refreshToken RefreshToken[]
+  tasks        Task[]
+}
+
+model RefreshToken {
+  id Int @id @default(autoincrement())
+  token String @unique
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  revoked Boolean @default(false)
+  expiresAt DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user      User     @relation(fields: [userId], references: [id])
+  title       String
+  description String
+  status      Status
+  priority    Priority
+  createdAt   DateTime @default(now())
+}
+
+enum Status {
+TODO
+IN_PROGRESS
+DONE
+}
+
+enum Priority {
+LOW 
+MEDIUM
+HIGH
+}

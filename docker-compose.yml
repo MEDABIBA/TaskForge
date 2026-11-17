@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: taskforge
+      POSTGRES_PASSWORD: taskforge_secret
+      POSTGRES_DB: taskforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    # ports:
+    #   - "3000:3000"
+    # volumes:
+    #   - ./backend/src:/app/src
+    environment:
+      SERVER: ${SERVER}
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_JWT: ${SECRET_JWT}
+    depends_on:
+      - postgres
+
+volumes:
+  pg_data:
